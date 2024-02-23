@@ -31,6 +31,7 @@ def leastSquaresQR(Q,R, b):
     x = gaussian_elimination(R,QTb)
     print("hej")
     print(x)
+    return x
 
 
 def gaussian_elimination(A, b):
@@ -61,8 +62,6 @@ def gaussian_elimination(A, b):
             b[j][0] -= A[j][i] * x[i]
 
     return x
-m =  8
-N =3
 
 
 
@@ -94,11 +93,33 @@ def QR(A):
         for k in range(m):
             Q[k][j] = y[k] / R[j][j]
     return Q, R
-A = [[1,0,1],[1,0,1],[1,1,0],[1,1,0],[1,1,2]]
-b = [[3],[2],[3],[4],[6]]
+
+def buildA(A):
+    n = len(A)
+    m = len(A)
+
+
+#A = [[1,0,1],[1,0,1],[1,1,0],[1,1,0],[1,1,2]]
+#b = [[3],[2],[3],[4],[6]]
+
+A = [[1,1],[1,2],[1,3],[1,4]]
+b = [[2],[4],[3],[2]]
+
+
 Q, R = QR(A)
 
-leastSquaresQR(Q,R,b)
+x = leastSquaresQR(Q,R,b)
+
+x_hat = [[xi] for xi in x]
 
 
+Ax = matrix_multiplication(A,x_hat)
+print(b[0][0])
 
+
+r = [b[i][0]-Ax[i][0] for i in range(len(b))]
+r_norm = sum(r[i]**2 for i in range(len(b)) ) ** 0.5
+print(r_norm)
+rmse = r_norm/(len(b)**0.5)
+
+print("RMSE IS: ", rmse)
